@@ -11,9 +11,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = trim($_POST["email"]);
     $age = trim($_POST["age"]);
 
-    if (empty($name)) $errors[] = "Name is required.";
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Valid email is required.";
-    if (!is_numeric($age)) $errors[] = "Age must be numeric.";
+    if (empty($name)){
+        $errors[] = "Name is required.";
+    } 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        $errors[] = "Email not valid.";
+    } 
+    if (!is_numeric($age)){
+        $errors[] = "Age must be numeric.";
+    } 
 
     if (empty($errors)) {
         $stmt = $conn->prepare("INSERT INTO users (name, email, age) VALUES (?, ?, ?)");
@@ -21,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($stmt->execute()) {
             $user_id = $stmt->insert_id;
-            header("Location: upload_photo.php?user_id=$user_id");
+            header("Location: ../task-2/upload_photo.php?user_id=$user_id");
             exit;
         } else {
             $errors[] = "Database error: " . $stmt->error;
