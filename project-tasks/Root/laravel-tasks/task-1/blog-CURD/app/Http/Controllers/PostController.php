@@ -7,10 +7,6 @@ use Illuminate\Http\Request;
 //use the Post model
 use App\Models\Post;
 
-use App\Models\User;
-
-
-
 class PostController extends Controller
 {
     //
@@ -51,7 +47,7 @@ class PostController extends Controller
     // edit function for the edit page
     public function edit(Post $post)
     {
-        return view('posts.edit', compact('post'));
+        return view('posts.editBlog', compact('post'));
     }
 
     // update function for updating blog post
