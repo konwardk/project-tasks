@@ -11,7 +11,7 @@ class PostController extends Controller
 {
     //
 
-    // index function for tha home page with user
+    // function for tha home page with user
     public function index()
     {
         $posts = Post::with('user')->latest()->get();
@@ -21,13 +21,13 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    // create function for the create page
+    // function for the create page
     public function create()
     {
         return view('posts.createNewBlog');
     }
 
-    //store function for storing blog post
+    //function for storing blog post
     public function store(Request $request)
     {
         $request->validate([
@@ -44,13 +44,13 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
     }
 
-    // edit function for the edit page
+    // function for the edit page
     public function edit(Post $post)
     {
         return view('posts.editBlog', compact('post'));
     }
 
-    // update function for updating blog post
+    // function for updating blog post
     public function update(Request $request, Post $post)
     {
         $request->validate([
@@ -66,7 +66,7 @@ class PostController extends Controller
         return redirect()->route('posts.index')->with('success', 'Post updated successfully.');
     }
 
-    // destroy function for deleting blog post
+    // function for deleting blog post
     public function destroy(Post $post)
     {
         $post->delete();

@@ -14,4 +14,11 @@
             </div>
         </div>
     </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <a class="text-gray-800 border-slate-800 p-2" href="{{route('posts.index')}}">Show all posts</a>
+        </div>
+    </div>
+
+    
 </x-app-layout>
