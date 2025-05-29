@@ -26,21 +26,23 @@ class AttendanceController extends Controller
         ], 201);
     }
 
-    public function getAttendance(Request $request)
-    {
-        $validated = $request->validate([
-            'employee_id' => 'required|integer',
-            'date' => 'required|date',
-        ]);
 
-        $attendance = Attendance::where('employee_id', $validated['employee_id'])
-            ->where('date', $validated['date'])
-            ->first();
+    // get attendance details
+    // public function getAttendance(Request $request)
+    // {
+    //     $validated = $request->validate([
+    //         'employee_id' => 'required|integer',
+    //         'date' => 'required|date',
+    //     ]);
 
-        if (!$attendance) {
-            return response()->json(['message' => 'Attendance record not found.'], 404);
-        }
+    //     $attendance = Attendance::where('employee_id', $validated['employee_id'])
+    //         ->where('date', $validated['date'])
+    //         ->first();
 
-        return response()->json($attendance);
-    }
+    //     if (!$attendance) {
+    //         return response()->json(['message' => 'Attendance record not found.'], 404);
+    //     }
+
+    //     return response()->json($attendance);
+    // }
 }

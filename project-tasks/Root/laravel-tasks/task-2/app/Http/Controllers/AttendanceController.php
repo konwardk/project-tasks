@@ -8,10 +8,9 @@ use App\Models\Attendance;
 class AttendanceController extends Controller
 {
     // function for storing atendance record in attendance table
-
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $validated = $request->validate([
             'employee_id' => 'required|integer',
             'date' => 'required|date',
