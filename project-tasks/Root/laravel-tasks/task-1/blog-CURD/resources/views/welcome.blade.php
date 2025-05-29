@@ -52,13 +52,16 @@
         <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
             <main class="flex gap-3 max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
                 <div class="text-white border p-4">
-                    Laravel Task One - Blog CURD
+                    Laravel Task 1 - Blog CURD
                 </div>
                 <div class="text-white border p-4">
-                    Laravel Task Two - Blog CURD
+                    Laravel Task 2 - API Endpoint
                 </div>
                 <div class="text-white border p-4">
-                    Laravel Task Three - Blog CURD
+                    Laravel Task 3 - Eloquent Relationships Tables
+                </div>
+                <div class="text-white border p-4">
+                    Laravel Task 8 - Laravel Middleware
                 </div>
             </main>
         </div>

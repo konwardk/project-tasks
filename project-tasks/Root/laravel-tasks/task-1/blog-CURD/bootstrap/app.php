@@ -13,6 +13,23 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+
+         $middleware->alias([
+
+        // middleware for auth sanctum
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth:sanctum' => \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+
+        // Custom middleware for admin access
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
+
+    ]);
+
+    $middleware->group('api', [
+        \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+        \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

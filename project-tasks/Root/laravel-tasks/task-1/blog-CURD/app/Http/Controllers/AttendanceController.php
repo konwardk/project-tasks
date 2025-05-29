@@ -11,7 +11,7 @@ class AttendanceController extends Controller
 
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $validated = $request->validate([
             'employee_id' => 'required|integer',
             'date' => 'required|date',
@@ -24,5 +24,23 @@ class AttendanceController extends Controller
             'message' => 'Attendance recorded successfully.',
             'data' => $attendance
         ], 201);
+    }
+
+    public function getAttendance(Request $request)
+    {
+        $validated = $request->validate([
+            'employee_id' => 'required|integer',
+            'date' => 'required|date',
+        ]);
+
+        $attendance = Attendance::where('employee_id', $validated['employee_id'])
+            ->where('date', $validated['date'])
+            ->first();
+
+        if (!$attendance) {
+            return response()->json(['message' => 'Attendance record not found.'], 404);
+        }
+
+        return response()->json($attendance);
     }
 }
