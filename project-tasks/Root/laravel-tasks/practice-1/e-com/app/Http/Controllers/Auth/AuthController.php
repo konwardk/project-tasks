@@ -13,7 +13,6 @@ class AuthController extends Controller
     //user login function
     public function login(Request $request){
 
-        // $user = "dk";
         // dd($request->all());
 
         // Validate request data
@@ -32,12 +31,15 @@ class AuthController extends Controller
         //get user email from users table
         $user = User::where('email',$request->email)->first();
 
-        //check if the user is admin or not
-        if($user->role !== 'admin'){
+
+        //check user existance
+        if(!$user){
             return response()->json([
                 'success' => false,
-                'message' => 'you are not admin'
-            ], 404);
+                'message' => "user not found",
+
+            ]);
+
         }
 
         // Password verification
@@ -47,10 +49,30 @@ class AuthController extends Controller
                     'error' => 'Invalid Credentials'
                 ], 401);
             }
-        
+
+            // Decide redirect URL based on role
+            if($user->role === 'superadmin'){
+                $dashboardUrl = url('/superadmin-dashboard');
+                $message = " Welcome super admin  ";
+            }
+            elseif($user->role === 'admin') {
+                $dashboardUrl = url('/admin-dashboard');
+                $message = " Welcome admin  ";
+
+            } elseif ($user->role === 'user') {
+                $dashboardUrl = url('/user-dashboard');
+                $message = " Welcome user ";
+
+            } else {
+                $dashboardUrl = url('/');
+                $message = " Not authorized  ";
+            }
+
+            
             return response()->json([
-            'message' => 'Login Successful',
-            'user' => $user
+            'message' => $message,
+            'user' => $user,
+            'redirect_url' => $dashboardUrl
         ],201);
         
 

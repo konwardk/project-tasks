@@ -17,10 +17,18 @@ Route::get('/', function () {
 //     return view('admin.adminDashboard');
 // })->middleware(CheckRole::class);
 
-// group middleware
-Route::middleware([CheckRole::class])->group(function(){
+// group middleware for admin
+Route::middleware(['CheckRole:admin'])->group(function(){
     Route::get('/admin-dashboard', function(){
             return view('admin.adminDashboard');
+    });
+});
+
+
+// group middleware for user
+Route::middleware(['CheckRole:user'])->group(function(){
+    Route::get('/user-home', function(){
+            return view('user.adminHome');
 
     });
 });

@@ -18,7 +18,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //register middleware here
         $middleware->append(Authentication::class);
-        $middleware->append(CheckRole::class);
+        // $middleware->append(CheckRole::class);
+        $middleware->alias([
+            'checkRole' => \App\Http\Middleware\CheckRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
