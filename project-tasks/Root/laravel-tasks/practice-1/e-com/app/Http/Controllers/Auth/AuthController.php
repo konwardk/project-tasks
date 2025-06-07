@@ -50,6 +50,8 @@ class AuthController extends Controller
                 ], 401);
             }
 
+            $token = $user->createToken('api-token')->plainTextToken;
+
             // Decide redirect URL based on role
             if($user->role === 'superadmin'){
                 $dashboardUrl = url('/superadmin-dashboard');
@@ -68,11 +70,13 @@ class AuthController extends Controller
                 $message = " Not authorized  ";
             }
 
-            
+
             return response()->json([
-            'message' => $message,
-            'user' => $user,
-            'redirect_url' => $dashboardUrl
+                'token' => $token,
+                'token_type' => 'Bearer',
+                'message' => $message,
+                'user' => $user,
+                'redirect_url' => $dashboardUrl
         ],201);
         
 
