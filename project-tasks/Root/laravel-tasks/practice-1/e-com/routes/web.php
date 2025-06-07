@@ -13,9 +13,9 @@ Route::get('/', function () {
 // });
 
 // route middleware
-Route::get('/admin-dashboard', function(){
-    return view('admin.adminDashboard');
-})->middleware(CheckRole::class);
+// Route::get('/admin-dashboard', function(){
+//     return view('admin.adminDashboard');
+// })->middleware(CheckRole::class);
 
 // group middleware
 Route::middleware([CheckRole::class])->group(function(){
