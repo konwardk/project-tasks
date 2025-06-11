@@ -9,7 +9,6 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    //
 
     // function for tha home page with user
     public function index()
@@ -30,6 +29,7 @@ class PostController extends Controller
     //function for storing blog post
     public function store(Request $request)
     {
+        $user = $request->user();
         $request->validate([
             'title' => 'required|string|max:255',
             'body' => 'required|string',
@@ -38,7 +38,7 @@ class PostController extends Controller
         Post::create([
             'title' => $request->title,
             'body' => $request->body,
-            'user_id' => auth()?->id(),
+            'user_id' => $user->id,
         ]);
 
         return redirect()->route('posts.index')->with('success', 'Post created successfully.');
