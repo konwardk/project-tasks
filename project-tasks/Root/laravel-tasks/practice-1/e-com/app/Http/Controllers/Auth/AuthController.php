@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    //user login function
+    // login function for all users
     public function login(Request $request){
 
         // dd($request->all());
@@ -55,15 +56,20 @@ class AuthController extends Controller
             // Decide redirect URL based on role
             if($user->role === 'superadmin'){
                 $dashboardUrl = url('/superadmin-dashboard');
-                $message = " Welcome super admin  ";
+                $message = " Welcome super admin  ".$user->name;
             }
             elseif($user->role === 'admin') {
                 $dashboardUrl = url('/admin-dashboard');
-                $message = " Welcome admin  ";
+                $message = " Welcome ".$user->name;
 
             } elseif ($user->role === 'user') {
                 $dashboardUrl = url('/user-dashboard');
-                $message = " Welcome user ";
+                $message = " Welcome ".$user->name;
+
+            }
+            elseif($user->role === "vendor"){
+                $dashboardUrl = url('/vendor-dashboard');
+                $message = " Welcome ". $user->name;
 
             } else {
                 $dashboardUrl = url('/');
@@ -80,6 +86,29 @@ class AuthController extends Controller
         ],201);
         
 
+    }
+
+    //logout function for all users
+    public function logout(Request $request)
+    {
+        $user = $request->user(); // or Auth::user()
+
+        $user->currentAccessToken()->delete(); // Revoke the token
+
+        return response()->json([
+            'success' => true,
+            'message' => "User {$user->name} logged out successfully"
+        ]);
+    }
+
+    
+    public function getUser(Request $request){
+        if (Auth::check()) {
+            $user = Auth::user()->name;
+            dd($user);
+        } else {
+            return response()->json(['message' => 'User not authenticated'], 401);
+        }
     }
     
 }
