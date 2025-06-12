@@ -46,7 +46,7 @@ class FileController extends Controller
         ]);
 
     Log::info("File upload Successful by {{$user->name}}");
-    return response()->json(['message' => 'File uploaded successfully']);
+    return response()->json(['message' => 'File uploaded successfully'],201);
 
 
     }

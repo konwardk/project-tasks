@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use App\Mail\RegistrationSuccessful;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -38,6 +40,7 @@ class RegisterController extends Controller
             'password' => Hash::make($request->password),
         ]);
         
+    Mail::to($user->email)->send(new RegistrationSuccessful());
         // Return a response
         return response()->json([
             'message' => 'User registered successfully.',
