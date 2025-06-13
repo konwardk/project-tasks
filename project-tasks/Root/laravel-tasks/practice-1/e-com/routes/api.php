@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\FileController;
+use App\Http\Controllers\CSVController;
 
 
 // Route::get('/user', function (Request $request) {
@@ -28,3 +29,5 @@ Route::middleware('auth:sanctum')->group(function(){
 
 
 });
+
+Route::post('/upload-csv',[CSVController::class,'uploadCSV']);
