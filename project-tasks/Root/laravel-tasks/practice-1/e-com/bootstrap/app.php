@@ -17,12 +17,19 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //register middleware here
-        $middleware->append(Authentication::class);
+        // $middleware->append(Authentication::class);
         // $middleware->append(CheckRole::class);
         $middleware->alias([
+            'auth.custom' => \App\Http\Middleware\Authentication::class,
             'checkRole' => \App\Http\Middleware\CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+    // Handle unauthenticated API calls globally
+    $exceptions->render(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthorized. Please log in.'
+        ], 401);
+    });
     })->create();

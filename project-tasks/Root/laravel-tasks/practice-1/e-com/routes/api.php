@@ -17,7 +17,7 @@ Route::post('/register',[RegisterController::class,'register']);
 //login
 Route::post('/login',[AuthController::class,'login']);
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware('auth:sanctum','auth.custom')->group(function(){
     
     //logout
     Route::post('/logout',[AuthController::class,'logout']);
@@ -27,7 +27,12 @@ Route::middleware('auth:sanctum')->group(function(){
     //upload file 
     Route::post('/upload',[FileController::class,'uploadFile']);
 
-
+    //upload/ import CSV file
+    Route::post('/upload-csv',[CSVController::class,'uploadCSV']);
+    //show data 
+    Route::get('/show-data',[CSVController::class,'showData']);
+    //export data 
+    Route::get('/export-data',[CSVController::class,'exportData']);
+    Route::get('/export-data-new',[CSVController::class,'exportProducts']);
 });
 
-Route::post('/upload-csv',[CSVController::class,'uploadCSV']);

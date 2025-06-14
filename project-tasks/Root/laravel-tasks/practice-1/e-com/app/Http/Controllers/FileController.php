@@ -19,6 +19,13 @@ class FileController extends Controller
     //check user
     $user = $request->user();
     // dd($user->id);
+    if(!$user){
+        return response()->json([
+            'success' => false,
+            'message' => "Unauthorised access!!"
+
+        ],404);
+    }
 
 
     //validate  uploads
