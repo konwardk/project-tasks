@@ -27,7 +27,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         if ($stmt->execute()) {
             $user_id = $stmt->insert_id;
-            header("Location: ../task-2/upload_photo.php?user_id=$user_id");
+            $success = "Photo uploaded successfully!";
+            // header("Location: ../task-2/upload_photo.php?user_id=$user_id");
             exit;
         } else {
             $errors[] = "Database error: " . $stmt->error;
