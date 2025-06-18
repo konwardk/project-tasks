@@ -42,4 +42,31 @@ class UserController extends Controller
             echo 'developer';
         }
     }
+
+    public function getManagers(Request $request){
+        $user = $request->user();
+        // dd($user);
+        $allManagers = User::join('roles','roles.id','=','users.role_id')->
+        where('roles.role_name','manager')->get();
+        // dd($allManagers);
+        return response()->json([
+            'success' => true,
+            'data' => $allManagers,
+        ],200);
+
+    }
+
+    public function getDevelopers(Request $request){
+        $user = $request->user();
+        // dd($user);
+        $allDevs = User::join('roles','roles.id','=','users.role_id')->
+        where('roles.role_name','developer')->get();
+        // dd($allDevs);
+
+        return response()->json([
+            'success' => true,
+            'data' => $allDevs,
+        ],200);
+
+    }
 }

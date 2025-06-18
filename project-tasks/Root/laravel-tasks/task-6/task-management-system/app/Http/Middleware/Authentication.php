@@ -16,10 +16,8 @@ class Authentication
     public function handle(Request $request, Closure $next): Response
     {
         if(!$request->user()){
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthorized access'
-            ]);
+            return response()->json(['message' => 'Unauthenticated'], 401);
+
         }
         return $next($request);
     }

@@ -76,8 +76,21 @@ class LoginController extends Controller
                 'message' => $message,
                 'user' => $user,
                 'redirect_url' => $dashboardUrl
-        ],201);
+        ],200);
         
 
+    }
+
+    //logout for all user
+    public function logout(Request $request){
+        $user = $request->user(); // or Auth::user()
+        // dd($user);
+
+        $user->currentAccessToken()->delete(); // Revoke the token
+
+        return response()->json([
+            'success' => true,
+            'message' => "User {$user->name} logged out successfully"
+        ],200);
     }
 }

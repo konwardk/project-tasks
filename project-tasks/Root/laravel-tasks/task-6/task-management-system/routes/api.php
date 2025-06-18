@@ -12,20 +12,36 @@ Route::get('/user', function (Request $request) {
 //get all users
 // Route::get('/all-users',[UserController::class,'getallUser']);
 
-Route::post('/login',[LoginController::class,'login']);
+Route::post('/login',[LoginController::class,'login'])->name('login');
 
 
 //routes for admin
 Route::middleware('auth:sanctum','checkRole:admin')->prefix('admin')->name('admin.')->group(function () {
 
+    //logout
+    Route::post('/logout',[LoginController::class,'logout']);
+
     //get all users
     Route::get('/all-users',[UserController::class,'getallUser']);
+
+    //get menegers
+    Route::get('/all-managers',[UserController::class,'getManagers']);
+
+    //get developers
+    Route::get('/all-developers',[UserController::class,'getDevelopers']);
+
 
 });
 
 
 //routes for manager
 Route::middleware('auth:sanctum','checkRole:manager')->prefix('manager')->name('manager.')->group(function () {
+
+     //logout
+    Route::post('/logout',[LoginController::class,'logout']);
+
+    //get all developers
+    Route::get('/all-developers',[UserController::class,'getDevelopers']);
     
 });
 
@@ -33,5 +49,7 @@ Route::middleware('auth:sanctum','checkRole:manager')->prefix('manager')->name('
 //routes for developer
 Route::middleware('auth:sanctum','checkRole:developer')->prefix('developer')->name('developer.')->group(function () {
     
+     //logout
+    Route::post('/logout',[LoginController::class,'logout']);
 });
 
