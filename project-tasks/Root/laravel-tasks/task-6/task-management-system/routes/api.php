@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,8 +33,10 @@ Route::middleware('auth:sanctum','checkRole:admin')->prefix('admin')->name('admi
     //get developers
     Route::get('/developers',[UserController::class,'getDevelopers']);
 
-});
+    // project resources
+    Route::resource('projects',ProjectController::class);
 
+});
 
 //routes for manager
 Route::middleware('auth:sanctum','checkRole:manager')->prefix('manager')->name('manager.')->group(function () {
