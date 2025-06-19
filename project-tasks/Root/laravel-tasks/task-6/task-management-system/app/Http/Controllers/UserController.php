@@ -24,24 +24,31 @@ class UserController extends Controller
         }
     }
 
-    public function getUser(Request $request){
+    public function getUsersByRole(Request $request)
+    {
+        $role = $request->query('role');
 
-        $user = $request->user();
-        if(!$user){
+        $validRoles = ['manager', 'developer'];
+
+        if (!$role || !in_array($role, $validRoles)) {
             return response()->json([
                 'success' => false,
-                'message' => "Unauthorized access!!"
-            ],404);
+                'message' => 'Invalid or missing role parameter.'
+            ], 400);
         }
 
-        if($user->role === 'manager'){
-            echo 'manager';
-        }
+        $users = User::join('roles', 'roles.id', '=', 'users.role_id')
+            ->where('roles.role_name', $role)
+            ->select('users.*', 'roles.role_name')
+            ->get();
 
-        if($user->role === 'developer'){
-            echo 'developer';
-        }
+        return response()->json([
+            'success' => true,
+            'role' => $role,
+            'data' => $users
+        ], 200);
     }
+
 
     public function getManagers(Request $request){
         $user = $request->user();
