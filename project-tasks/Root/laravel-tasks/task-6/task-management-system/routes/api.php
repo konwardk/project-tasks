@@ -36,6 +36,9 @@ Route::middleware('auth:sanctum','checkRole:admin')->prefix('admin')->name('admi
     // project resources
     Route::resource('projects',ProjectController::class);
 
+    //get project by status
+    Route::get('/project-by-status',[ProjectController::class,'showProjectByStatus']);
+
 });
 
 //routes for manager

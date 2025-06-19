@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 
 class LoginController extends Controller
@@ -42,6 +43,7 @@ class LoginController extends Controller
 
         // Password verification
             if (!Hash::check($request->password, $user->password)) {
+                Log::error("Login failed by $user->name");
                 return response()->json([
                     'success' => false,
                     'error' => 'Invalid Credentials'
@@ -69,6 +71,7 @@ class LoginController extends Controller
                 $dashboardUrl = url('/');
                 $message = " Not authorized  ";
             }
+            Log::info("$user->name logged in succesfully");
 
          return response()->json([
                 'token' => $token,
@@ -87,6 +90,8 @@ class LoginController extends Controller
         // dd($user);
 
         $user->currentAccessToken()->delete(); // Revoke the token
+
+        Log::info("$user->name logged out successfully.");
 
         return response()->json([
             'success' => true,
