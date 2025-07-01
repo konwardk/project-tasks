@@ -9,20 +9,24 @@ class UserController extends Controller
 {
     //
 
-    public function getallUser(){
-        $getUser = User::all();
-        if($getUser->isEmpty()){
-            return response()->json([
-                'success' => false,
-                'message' => "No User Found",
-            ]);
-        }else{
-            return response()->json([
-                'success' => true,
-                'data' => $getUser
-            ]);
-        }
+    public function getallUser() {
+    $getUser = User::join('roles', 'roles.id', '=', 'users.role_id')
+        ->select('users.id', 'users.name', 'users.email', 'roles.role_name')
+        ->paginate(8);
+
+    if ($getUser->isEmpty()) {
+        return response()->json([
+            'success' => false,
+            'message' => "No User Found",
+        ]);
+    } else {
+        return response()->json([
+            'success' => true,
+            'data' => $getUser
+        ]);
     }
+}
+
 
     public function getUsersByRole(Request $request)
     {

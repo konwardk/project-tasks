@@ -56,4 +56,15 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class,'role_id');
     }
 
+    // Tasks assigned to the user
+    public function assignedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_to');
+    }
+
+    // Tasks the user has assigned to others
+    public function delegatedTasks()
+    {
+        return $this->hasMany(Task::class, 'assigned_by');
+    }
 }

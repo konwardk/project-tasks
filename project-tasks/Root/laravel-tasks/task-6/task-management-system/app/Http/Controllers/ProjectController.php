@@ -29,7 +29,7 @@ class ProjectController extends Controller
             )
             ->orderBy('projects.created_at', 'desc'); // Optional sorting
 
-        $projects = $query->paginate(10); // Show 10 projects per page
+        $projects = $query->paginate(8); // Show 10 projects per page
 
         if ($projects->isEmpty()) {
             return response()->json([
@@ -226,92 +226,58 @@ class ProjectController extends Controller
         }
     }
 
-    // show project by status
-    // public function showProjectByStatus(Request $request){
-
-    //     $getStatus = $request->status_id;
-    //     // dd($getStatus);
-
-    //     $getproject = Project::join('statuses', 'statuses.id', '=', 'projects.status_id')
-    //         ->join('users', 'projects.created_by', '=', 'users.id')
-    //         ->select(
-    //             'projects.id',
-    //             'projects.project_name',
-    //             'projects.start_date',
-    //             'projects.end_date',
-    //             'statuses.status_name as status',
-    //             'users.name as created_by',
-    //             'projects.created_at',
-    //             'projects.updated_at'
-    //         )
-    //         ->where('projects.status_id', $getStatus)
-    //         ->get();
-
-    //         if ($getproject->isEmpty()) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'No project found'
-    //         ], 404);
-    //     }
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'data' => $getproject
-    //     ], 200);
-
-    // }
 
     public function showProjectByStatus(Request $request)
-{
-    $query = Project::join('statuses', 'statuses.id', '=', 'projects.status_id')
-        ->join('users', 'projects.created_by', '=', 'users.id')
-        ->select(
-            'projects.id',
-            'projects.project_name',
-            'projects.start_date',
-            'projects.end_date',
-            'statuses.status_name as status',
-            'users.name as created_by',
-            'projects.created_at',
-            'projects.updated_at'
-        )
-        ->where('statuses.id','=',$request->status_id);
-        
-        // dd($query);
+    {
+        $query = Project::join('statuses', 'statuses.id', '=', 'projects.status_id')
+            ->join('users', 'projects.created_by', '=', 'users.id')
+            ->select(
+                'projects.id',
+                'projects.project_name',
+                'projects.start_date',
+                'projects.end_date',
+                'statuses.status_name as status',
+                'users.name as created_by',
+                'projects.created_at',
+                'projects.updated_at'
+            )
+            ->where('statuses.id','=',$request->status_id);
+            
+            // dd($query);
 
 
-    // Apply filters
-    // if ($request->has('status_id')) {
-    //     $query->where('projects.status_id', $request->status_id);
-    // }
+        // Apply filters
+        // if ($request->has('status_id')) {
+        //     $query->where('projects.status_id', $request->status_id);
+        // }
 
-    // if ($request->has('start_date')) {
-    //     $query->whereDate('projects.start_date', '>=', $request->start_date);
-    // }
+        // if ($request->has('start_date')) {
+        //     $query->whereDate('projects.start_date', '>=', $request->start_date);
+        // }
 
-    // if ($request->has('end_date')) {
-    //     $query->whereDate('projects.end_date', '<=', $request->end_date);
-    // }
+        // if ($request->has('end_date')) {
+        //     $query->whereDate('projects.end_date', '<=', $request->end_date);
+        // }
 
-    // if ($request->has('created_by')) {
-    //     $query->where('projects.created_by', $request->created_by);
-    // }
+        // if ($request->has('created_by')) {
+        //     $query->where('projects.created_by', $request->created_by);
+        // }
 
-    // Get results with pagination (10 per page)
-    $projects = $query->orderBy('projects.created_at', 'desc')->paginate(10);
+        // Get results with pagination (10 per page)
+        $projects = $query->orderBy('projects.created_at', 'desc')->paginate(10);
 
-    if (!$projects) {
+        if (!$projects) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No project found'
+            ], 404);
+        }
+
         return response()->json([
-            'success' => false,
-            'message' => 'No project found'
-        ], 404);
+            'success' => true,
+            'data' => $projects
+        ], 200);
     }
-
-    return response()->json([
-        'success' => true,
-        'data' => $projects
-    ], 200);
-}
 
 
 }

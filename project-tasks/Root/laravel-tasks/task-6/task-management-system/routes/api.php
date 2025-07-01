@@ -3,15 +3,13 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
-
-//get all users
-// Route::get('/all-users',[UserController::class,'getallUser']);
 
 Route::post('/login',[LoginController::class,'login'])->name('login');
 
@@ -30,9 +28,6 @@ Route::middleware('auth:sanctum','checkRole:admin')->prefix('admin')->name('admi
     //get manegers
     Route::get('/managers',[UserController::class,'getManagers']);
 
-    //get developers
-    Route::get('/developers',[UserController::class,'getDevelopers']);
-
     // project resources
     Route::resource('projects',ProjectController::class);
 
@@ -41,11 +36,21 @@ Route::middleware('auth:sanctum','checkRole:admin')->prefix('admin')->name('admi
 
 });
 
+// routes for admin and manager role
+Route::middleware(['auth:sanctum', 'checkRole:admin,manager'])->group(function () {
+
+    //get developers
+    Route::get('/developers',[UserController::class,'getDevelopers']);
+
+    // store tasks
+    Route::post('/tasks', [TaskController::class, 'store']);
+
+
+});
+
 //routes for manager
 Route::middleware('auth:sanctum','checkRole:manager')->prefix('manager')->name('manager.')->group(function () {
 
-    //get all developers
-    Route::get('/developers',[UserController::class,'getDevelopers']);
     
 });
 
