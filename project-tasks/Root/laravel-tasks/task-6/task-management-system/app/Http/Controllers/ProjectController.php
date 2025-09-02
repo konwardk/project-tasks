@@ -13,7 +13,7 @@ class ProjectController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index()
+   public function index(Request $request)
     {
         $query = Project::join('statuses', 'statuses.id', '=', 'projects.status_id')
             ->join('users', 'projects.created_by', '=', 'users.id')
@@ -27,9 +27,19 @@ class ProjectController extends Controller
                 'projects.created_at',
                 'projects.updated_at'
             )
-            ->orderBy('projects.created_at', 'desc'); // Optional sorting
+            ->orderBy('projects.created_at', 'desc');
 
-        $projects = $query->paginate(8); // Show 10 projects per page
+        // 🔹 Apply search filter if query param exists
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('projects.project_name', 'LIKE', "%{$search}%")
+                ->orWhere('users.name', 'LIKE', "%{$search}%")
+                ->orWhere('statuses.status_name', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $projects = $query->paginate(8);
 
         if ($projects->isEmpty()) {
             return response()->json([
@@ -43,6 +53,7 @@ class ProjectController extends Controller
             'data' => $projects
         ], 200);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -142,10 +153,14 @@ class ProjectController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
-        //
+        $project = Project::findOrFail($id);
+        return response()->json([
+            'data' => $project
+        ]);
     }
+
 
     /**
      * Update the specified resource in storage.
